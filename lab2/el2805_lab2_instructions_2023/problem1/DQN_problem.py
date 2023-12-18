@@ -54,7 +54,7 @@ env = gym.make('LunarLander-v2')
 env.reset()
 
 # Parameters
-N_episodes = 100                             # Number of episodes
+N_episodes = 500                             # Number of episodes
 discount_factor = 0.99                       # Value of the discount factor
 n_ep_running_average = 50                    # Running average of 50 episodes
 n_actions = env.action_space.n               # Number of available actions
@@ -123,7 +123,8 @@ for i in EPISODES:
             action = max_action
 
         # Observe next and append to buffer B
-        next_state, reward, done, _, _ = env.step(action)
+        next_state, reward, terminated, truncated, _ = env.step(action)
+        done = truncated or terminated
         # Update episode reward
         total_episode_reward += reward
         # Store experience in replay buffer
@@ -214,7 +215,7 @@ ax[1].set_ylabel('Total number of steps')
 ax[1].set_title('Total number of steps vs Episodes')
 ax[1].legend()
 ax[1].grid(alpha=0.3)
-# plt.show()
+plt.show()
 
 # plt.plot(losses)
 # plt.title('Loss Function Over Time')
