@@ -29,24 +29,6 @@ from utils.epsilon_decay import decay
 # # # N = 2
 # # # print(running_average(x, N))
 # #
-# # # steps = 50
-# # # y = np.linspace(0, 1.5, steps)
-# # # w = np.linspace(-np.pi, np.pi, steps)
-# # #
-# # # Y, W = np.meshgrid(y, w)
-# # # states = np.zeros((steps ** 2, 8))
-# # # x = np.array([0, 1, 2])
-# # # y = np.array([0, 1, 2, 3])
-# # # # print(x.shape)
-# # # XX, YY = np.meshgrid(x, y)
-# # # states = np.zeros((x.shape[0] * y.shape[0], 8))
-# # # # print(XX, '\n')
-# # # print(YY, '\n')       #
-# # #
-# # # print(YY.flatten())   # 3*4 elements
-# # # states[:, 1] = XX.flatten()
-# # # states[:, 4] = YY.flatten()
-# # #
 # # # print(states)
 # #
 # # # size = 30000

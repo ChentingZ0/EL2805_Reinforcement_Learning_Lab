@@ -33,7 +33,6 @@ import torch.nn as nn
 import torch.optim as optim
 from torchsummary import summary
 from utils.DQN_Network import Q_Network
-# from utils import running_average
 from utils.DQN_buffer import ReplayBuffer
 from utils.epsilon_decay import decay
 
