@@ -22,7 +22,7 @@ the instructions
 
 import numpy as np
 import gym
-import torch
+import pickle
 import copy
 import matplotlib.pyplot as plt
 from tqdm import trange
@@ -35,18 +35,8 @@ from torchsummary import summary
 from utils.DQN_Network import Q_Network
 from utils.DQN_buffer import ReplayBuffer
 from utils.epsilon_decay import decay
+from utils.running_average import running_average
 
-
-def running_average(x, N):
-    ''' Function used to compute the running average
-        of the last N elements of a vector x
-    '''
-    if len(x) >= N:
-        y = np.copy(x)
-        y[N-1:] = np.convolve(x, np.ones((N, )) / N, mode='valid')
-    else:
-        y = np.zeros_like(x)
-    return y
 
 # Import and initialize the discrete Lunar Lander Environment
 env = gym.make('LunarLander-v2')
@@ -191,10 +181,6 @@ for i in EPISODES:
 # Save the network
 torch.save(Q_network, 'neural-network-1.pth')
 
-# net = Q_Network(input_size=dim_state, hidden_size=64, output_size=n_actions)
-# net.load_state_dict(torch.load('neural-network-1.pth'))
-# summary(net, input_size=(dim_state,), output_size=n_actions)
-
 # Plot Rewards and steps
 fig, ax = plt.subplots(nrows=1, ncols=2, figsize=(16, 9))
 ax[0].plot([i for i in range(1, N_episodes+1)], episode_reward_list, label='Episode reward')
@@ -214,10 +200,18 @@ ax[1].set_ylabel('Total number of steps')
 ax[1].set_title('Total number of steps vs Episodes')
 ax[1].legend()
 ax[1].grid(alpha=0.3)
+plt.savefig('./figures/training_1')
 plt.show()
 
-# plt.plot(losses)
-# plt.title('Loss Function Over Time')
-# plt.xlabel('Episode')
-# plt.ylabel('Loss')
-# plt.show()
+
+
+with open('reward.pkl', 'wb') as file:
+    pickle.dump(episode_reward_list, file)
+
+model = torch.load('neural-network-1.pth')
+device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
+model = model.to(device)
+input_size = env.observation_space.shape[0]
+model.eval()
+summary(model, input_size=(input_size,))
+
