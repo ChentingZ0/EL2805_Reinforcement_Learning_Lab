@@ -44,7 +44,7 @@ env.reset()
 
 # Parameters
 N_episodes = 500                             # Number of episodes
-discount_factor = 0.99                       # Value of the discount factor
+discount_factor = 0.03                       # Value of the discount factor
 n_ep_running_average = 50                    # Running average of 50 episodes
 n_actions = env.action_space.n               # Number of available actions
 dim_state = len(env.observation_space.high)  # State dimensionality
@@ -181,6 +181,12 @@ for i in EPISODES:
 # Save the network
 torch.save(Q_network, 'neural-network-1.pth')
 
+with open('reward.pkl', 'wb') as file:
+    pickle.dump(episode_reward_list, file)
+
+with open('episode_number_of_steps.pkl', 'wb') as file:
+    pickle.dump(episode_number_of_steps, file)
+
 # Plot Rewards and steps
 fig, ax = plt.subplots(nrows=1, ncols=2, figsize=(16, 9))
 ax[0].plot([i for i in range(1, N_episodes+1)], episode_reward_list, label='Episode reward')
@@ -200,13 +206,11 @@ ax[1].set_ylabel('Total number of steps')
 ax[1].set_title('Total number of steps vs Episodes')
 ax[1].legend()
 ax[1].grid(alpha=0.3)
-plt.savefig('./figures/training_1')
+plt.savefig('./figures/training_3_gamma=0.03.png')
 plt.show()
 
 
 
-with open('reward.pkl', 'wb') as file:
-    pickle.dump(episode_reward_list, file)
 
 model = torch.load('neural-network-1.pth')
 device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
